@@ -1,5 +1,0 @@
-dfs_blocksize: 128
-dfs_datanode_handler_count: 10
-dfs_datanode_max_transfer_threads: 4096
-dfs_namenode_handler_count: 26
-dfs_replication: 1

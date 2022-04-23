@@ -1,7 +1,0 @@
-yarn_nodemanager_resource_cpu_vcores: 14
-yarn_nodemanager_resource_memory_mb: 14889
-yarn_nodemanager_vmem_pmem_ratio: 3.8210360054439123
-yarn_scheduler_maximum_allocation_mb: 12147
-yarn_scheduler_maximum_allocation_vcores: 15
-yarn_scheduler_minimum_allocation_mb: 1121
-yarn_scheduler_minimum_allocation_vcores: 2

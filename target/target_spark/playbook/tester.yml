@@ -1,0 +1,249 @@
+---
+#1.部署服务和配置文件  2.运行  3.拿出report
+- hosts: "wyl1"
+  vars:
+    ansible_sudo_pass: wyl123456
+    db_name: spark
+    task_name: spark-rl-test
+    tester_home: "/home/wk/sd_hibench/{{db_name}}/{{task_name}}"
+    spark_home: "/home/wk/sd_spark/{{db_name}}/{{task_name}}"
+    local_sp_config_env: ../others/spark-env.sh
+    sp_config_env: "{{spark_home}}/spark/conf/spark-env.sh"
+    local_tester_src: ../others/hibench.tar.gz
+    tester_src: "{{tester_home}}/../hibench.tar.tgz"
+    tester_server: "{{tester_home}}/hibench"
+    tester_conf: "{{tester_server}}/conf"
+    tester_bin: "{{tester_server}}/bin/workloads"
+    local_hadoop_config_template: ../others/hadoop.conf
+    local_hibench_config_template: ../others/hibench.conf
+    local_spark_config_template: ../others/spark.conf
+    hadoop_config: "{{tester_conf}}/hadoop.conf"
+    hibench_config: "{{tester_conf}}/hibench.conf"
+    sparkconf_config: "{{tester_conf}}/spark.conf"
+    local_re_report_py_template: ../re_report.py
+    re_report_py: "{{tester_server}}/report"
+    local_hibench_workload: "{{workload_path}}"
+    hibench_workload: "{{tester_home}}/tearsort.conf"
+    old_result_path: "{{tester_server}}/report/hibench"
+    old_state_path: "/home/wk/info.txt"
+    local_result_dir: "../results/{{task_name}}"
+    deploy_home: "/home/wk/sd_hadoop/{{db_name}}/{{task_name}}"
+    ha_server: "{{deploy_home}}/hadoop"
+    n_client: 16
+    remote_user: wyl
+  pre_tasks:
+    - name: load spark_config information
+      include_vars:
+        file: "{{local_result_dir}}/{{task_id}}_{{rep}}_spark_config.yml"
+        name: spark_config
+
+#    - name: copy hibench workload
+#      copy:
+#        src: "{{local_hibench_workload}}"
+#        dest: "{{hibench_workload}}"
+
+  tasks:
+#    slave 1  operation
+#    - name: copy hibench.hadoop config
+#      template:
+#        src: "{{local_hadoop_config_template}}"
+#        dest: "{{hadoop_config}}"
+
+#    - name: copy hibench.hibench config
+#      template:
+#        src: "{{local_hibench_config_template}}"
+#        dest: "{{hibench_config}}"
+
+
+    - name: copy hibench.spark config
+      template:
+        src: "{{local_spark_config_template}}"
+        dest: "{{sparkconf_config}}"
+
+    - name: copy re_report.py
+      template:
+        src: "{{local_re_report_py_template}}"
+        dest: "{{re_report_py}}"
+
+    - name: start hadoop
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{ha_server}}/sbin/start-all.sh"
+
+    - name: namenode safemode leave
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{ha_server}}/bin/hadoop dfsadmin -safemode leave || true"
+      ignore_errors: true
+#
+    - name: delete workload Input
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{ha_server}}/bin/hadoop fs -rm -r /user/hadoop/HiBench/Kmeans/Input/*"
+#      delete folder:-rm -r
+
+    - name: upload workload
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{ha_server}}/bin/hadoop fs -put /home/wk/data/kmeans_20m/Input/ /user/hadoop/HiBench/Kmeans"
+
+#    - name: running-t1
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/micro/terasort/spark/run.sh || true"
+##      async: 1000
+#      poll: 30
+#      ignore_errors: true
+###      more than 200s:kill
+#    - name: running-t2
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/micro/terasort/spark/run.sh || true"
+##      async: 1000
+#      poll: 30
+#      ignore_errors: true
+##
+#    - name: running-t3
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/micro/terasort/spark/run.sh || true"
+##      async: 1000
+#      poll: 30
+#      ignore_errors: true
+    - name: running-t1
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/ml/kmeans/spark/run.sh || true"
+      async: 240
+      poll: 30
+      ignore_errors: true
+
+    - name: running-t2
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/ml/kmeans/spark/run.sh || true"
+#      async: 240
+      poll: 30
+      ignore_errors: true
+#
+#    - name: running-t1
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/micro/wordcount/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+#
+#    - name: running-t2
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/micro/wordcount/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+#
+#    - name: running-t3
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/micro/wordcount/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+#    - name: running-t1
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/websearch/pagerank/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+##
+#    - name: running-t2
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/websearch/pagerank/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+    - name: running-t3
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/ml/kmeans/spark/run.sh || true"
+      async: 240
+      poll: 30
+      ignore_errors: true
+#
+#    - name: running-t3
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/ml/kmeans/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+
+#    - name: running-t3
+#      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 {{tester_bin}}/websearch/pagerank/spark/run.sh || true"
+#      async: 240
+#      poll: 30
+#      ignore_errors: true
+
+- hosts: "wyl2,wyl3"
+  vars:
+    ansible_sudo_pass: wyl123456
+    db_name: spark
+    task_name: spark-rl-test
+    old_state_path: "/home/wk/info.txt"
+    local_result_dir: "../results/{{task_name}}"
+    n_client: 16
+    remote_user: wyl
+
+  tasks:
+    - name: get metric
+      shell: "bash /home/wk/state2.sh"
+
+    - name: fetch system state wyl2
+      fetch:
+        src: "{{old_state_path}}"
+        dest: "{{local_result_dir}}/{{task_id}}_wyl2_state_{{rep}}"
+        flat: yes
+        ignore_errors: true
+      when: ansible_hosts == 'wyl2'
+
+    - name: fetch system state wyl3
+      fetch:
+        src: "{{old_state_path}}"
+        dest: "{{local_result_dir}}/{{task_id}}_wyl3_state_{{rep}}"
+        flat: yes
+        ignore_errors: true
+      when: ansible_hosts == 'wyl3'
+
+
+- hosts: "wyl1"
+  vars:
+    ansible_sudo_pass: wyl123456
+    db_name: spark
+    task_name: spark-rl-test
+    tester_home: "/home/wk/sd_hibench/{{db_name}}/{{task_name}}"
+    tester_server: "{{tester_home}}/hibench"
+    old_result_path: "{{tester_server}}/report/hibench"
+    local_result_dir: "../results/{{task_name}}"
+    n_client: 16
+    remote_user: wyl
+
+  tasks:
+    - name: kill hadoop
+      shell: "JAVA_HOME=/usr/lib/jvm/jdk1.8.0_211 /home/wk/sd_hadoop/spark/spark-rl-test/hadoop/sbin/stop-all.sh"
+
+    - name: hibench_report re_format
+      shell: "python /home/wk/sd_hibench/spark/spark-rl-test/hibench/report/re_report.py || true"
+      ignore_errors: true
+
+    - name: fetch run result
+      fetch:
+        src: "{{old_result_path}}"
+        dest: "{{local_result_dir}}/{{task_id}}_run_result_{{rep}}"
+        flat: yes
+        ignore_errors: true
+
+    - name: clear report
+      file:
+        path: "{{tester_server}}/report"
+        state: "{{item}}"
+      with_items:
+        - absent
+        - directory
+
+
+
+#- hosts: spark-test
+#  vars:
+#    ansible_sudo_pass: 123456
+#    db_name: spark
+#    task_name: spark-rl-test
+#    spark_home: "/home/wk/sd_spark/{{db_name}}/{{task_name}}"
+#    spark_logs: "{{spark_home}}/spark/logs"
+#    spark_work: "{{spark_home}}/spark/work"
+#  remote_user: root
+#
+#  tasks:
+#    - name: clear spark_logs
+#      file:
+#        path: "{{spark_logs}}"
+#        state: "{{item}}"
+#      with_items:
+#        - absent
+#        - directory
+#    - name: clear spark_work
+#      file:
+#        path: "{{spark_work}}"
+#        state: "{{item}}"
+#      with_items:
+#        - absent
+#        - directory

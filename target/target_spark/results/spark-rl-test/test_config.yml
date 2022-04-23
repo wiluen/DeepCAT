@@ -1,0 +1,21 @@
+!!python/object:lib.other.TestConfig
+clients: 16
+exist: delete
+hosts: !!python/object:lib.other.HostConifg
+  master: spark-master
+  slave1: spark-slave1
+  slave2: spark-slave2
+  slave3: spark-slave3
+optimizer: !!python/object:lib.other.OptimizerConfig
+  extra_vars:
+    acq: ei
+  iter_limit: 70
+  name: bo
+  reboot_interval: 500
+  repitition: 8
+target: target_spark
+task_name: spark-rl-test
+tester: hibench
+tune_app: true
+tune_os: true
+workload: work.conf

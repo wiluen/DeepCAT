@@ -1,0 +1,21 @@
+---
+  # task_name: TODO
+  target: mongodb
+  hosts:
+    # tester: TODO
+    # testee: TODO
+  workload: stress
+  exist:
+  tune_os: yes
+  tune_app: yes
+  optimizer:
+    name: anneal
+    iter_limit: 20
+    reboot_interval: 5
+    repitition: 3
+    extra_vars:
+      active:
+        - jvm_young_generation_size
+        - jvm_max_gc_pause
+  clients: 1024
+  tester: ycsb

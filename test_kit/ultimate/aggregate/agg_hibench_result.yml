@@ -1,0 +1,15 @@
+---
+  target: target_spark
+  task_name: #input
+  # extract:
+  metric:
+    len: yes
+    mean: yes
+    stdev: yes
+    CI_upper: no
+    CI_lower: no
+    CI_r: no
+    percent: no
+  overwrite: yes
+  tester: hibench
+  # out

@@ -1,0 +1,202 @@
+---
+  spark_yarn_am_memory:
+    min: 512
+    max: 2048
+    default: 2004
+  spark_yarn_am_cores:
+    min: 1
+    max: 4
+    default: 2
+  spark_yarn_am_waitTime:
+    min: 100
+    max: 60000
+    default: 4034
+    ###
+  spark_executor_instances:
+    min: 2
+    max: 4
+    default: 2
+  yarn_executor_num:
+    min: 1
+    max: 4
+    default: 1
+
+
+  spark_worker_cores:
+    min: 4
+    max: 8
+    default: 4
+  spark_worker_memory:
+    min: 4096
+    max: 12288
+    default: 8192
+
+
+  spark_ui_retainedJobs:
+    min: 100
+    max: 1000
+    default: 1000
+  spark_ui_retainedStages:
+    min: 100
+    max: 1000
+    default: 1000
+  spark_ui_retainedTasks:
+    min: 50000
+    max: 100000
+    default: 100000
+  spark_worker_ui_retainedExecutors:
+    min: 200
+    max: 1000
+    default: 1000
+  spark_worker_ui_retainedDrivers:
+    min: 200
+    max: 1000
+    default: 1000
+  spark_sql_ui_retainedExecutions:
+    min: 200
+    max: 1000
+    default: 1000
+  spark_streaming_ui_retainedBatche:
+    min: 200
+    max: 1000
+    default: 1000
+  spark_ui_retainedDeadExecutors:
+    min: 50
+    max: 100
+    default: 100
+
+###
+  spark_driver_cores:
+    min: 1
+    max: 4
+    default: 2
+    ###
+  spark_executor_cores:
+    min: 1
+    max: 4
+    default: 2
+    ###
+  spark_driver_memory:
+    min: 512
+    max: 2048
+    default: 1143
+    ###
+  spark_executor_memory:
+    min: 512
+    max: 2048
+    default: 1420
+
+
+  spark_rdd_compress:
+    max:
+    range:
+      - "false"
+      - "true"
+    default: 0
+    ####
+  spark_io_compression_codec:
+    max:
+    range:
+      - snappy
+      - lz4
+      - lzf
+    default: 0
+  spark_io_compression_blockSize:
+    min: 1024
+    max: 655536
+    default: 156893
+####
+  spark_memory_fraction:
+    min: 0.2
+    max: 0.8
+    float: yes
+    default: 0.3
+    ####
+  spark_memory_storageFraction:
+    min: 0.2
+    max: 0.8
+    float: yes
+    default: 0.5
+####
+  spark_broadcast_blockSize:
+    min: 1024
+    max: 8192
+    default: 3705
+  spark_files_fetchTimeout:
+    min: 10
+    max: 60
+    default: 28
+  spark_files_maxPartitionBytes:
+    min: 16777216
+    max: 268435456
+    default: 41076385
+  spark_files_openCostInBytes:
+    min: 1048576
+    max: 16777216
+    default: 15573753
+  spark_storage_memoryMapThreshold:
+    min: 2
+    max: 8
+    default: 2
+###
+  spark_task_cpus:
+    min: 1
+    max: 2
+    default: 1
+  spark_task_maxFailures:
+    min: 1
+    max: 8
+    default: 1
+
+  spark_speculation_interval:
+    min: 50
+    max: 500
+    default: 346
+  spark_speculation_quantile:
+    min: 0.1
+    max: 1.0
+    float: yes
+    default: 0.3
+  spark_speculation_multiplier:
+    min: 1.1
+    max: 1.8
+    float: yes
+    default: 1.1
+  spark_scheduler_revive_interval:
+    min: 500
+    max: 1500
+    default: 1445
+
+
+  spark_dynamicAllocation_enabled:
+    max:
+    range:
+      - "true"
+      - "false"
+    default: 1
+  spark_dynamicAllocation_executorIdleTimeout:
+    min: 30
+    max: 90
+    default: 69
+  spark_dynamicAllocation_minExecutors:
+    min: 0
+    max: 1
+    default: 0
+  spark_dynamicAllocation_maxExecutors:
+    min: 4
+    max: 5
+    default: 4
+  spark_dynamicAllocation_schedulerBacklogTimeout:
+    min: 1000
+    max: 10000
+    default: 8860
+#####
+  spark_default_parallelism:
+    min: 1
+    max: 20
+    default: 4
+  spark_sql_shuffle_partitions:
+    min: 1
+    max: 20
+    default: 11
+

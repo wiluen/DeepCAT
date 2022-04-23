@@ -1,0 +1,19 @@
+---
+  # task_name: TODO
+  target: target_spark
+  hosts:
+    master: spark-master
+    slave1: spark-slave1
+    slave2: spark-slave2
+    slave3: spark-slave3
+  workload: work.conf
+  exist:
+  tune_os: no
+  tune_app: yes
+  optimizer:
+    name: rand
+    iter_limit: 0
+    reboot_interval: 500
+    repitition: 20
+  clients: 16
+  tester: hibench

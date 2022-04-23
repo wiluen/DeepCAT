@@ -23,7 +23,6 @@ policy_noise = 0.2
 # directory="../model_hypeparam_n1n2_done/64/"
 directory="../model_km_increase/orig_td3/"
 c=520
-# RENDER = False
 
 
 

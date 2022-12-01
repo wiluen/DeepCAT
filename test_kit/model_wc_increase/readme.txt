@@ -1,2 +1,0 @@
-my model
-cdbtune model

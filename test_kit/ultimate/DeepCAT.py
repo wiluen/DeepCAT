@@ -123,7 +123,7 @@ class TD3(object):
         #     if q.item()>=0.1:
         #         break
         #     else:
-        #         act = np.clip(np.random.normal(act, 0.2), 0.1, 0.9)
+        #         act = np.clip(np.random.normal(act, 0.05), 0.1, 0.9)
         #         act = torch.FloatTensor(act)
         #         c += 1
         # endtime = datetime.datetime.now()

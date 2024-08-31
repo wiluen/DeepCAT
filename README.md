@@ -13,6 +13,16 @@ Big data frameworks usually provide a large number of performance-related parame
 
 ### Benchmark
 we use 8 worklaods with different input data sizes form Hibench [The HiBench Benchmark Suite: Characterization of the MapReduce-Based Data Analysis (https://www.spec.org/sources/cloudiaas2018/sources/hibench/HiBench/WISS10_conf_full_011.pdf)
+- WordCount (WC)
+- TeraSort (TS)
+- PageRank (PR)
+- KMeans (KM)
+- Gradient Boosted Trees(GBT)
+- Nweight (NW)
+- Principal Component Analysis (PCA)
+- Aggregation (AGG)
+  
+### main codes
 
 ### configuraiton details
-
+![Description of the performance-critical parameters From Spark, YARN and HDFS](https://github.com/wiluen/DeepCAT/blob/main/fig/sparkconf.jpg)

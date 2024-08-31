@@ -7,6 +7,7 @@ Big data frameworks usually provide a large number of performance-related parame
 - Hadoop 2.7.3
 - Spark 2.2.2
 - Hibench 7.0
+- Ansible
 
 ### Install dependencies (with python 3.8)
 > pip install -r requirements.txt

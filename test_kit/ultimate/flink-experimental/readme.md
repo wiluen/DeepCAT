@@ -1,4 +1,4 @@
-# FLINK experimental codes
+# Flink experimental codes
 ## main changes:
 - flink tester.yml for conducting tests on the clusters
 - flink_conf.yml for configuration overview

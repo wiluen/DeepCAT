@@ -1,0 +1,149 @@
+---
+  spark_default_parallelism:
+    min: 8
+    max: 200
+    default: 10
+  spark_driver_cores:
+    min: 1
+    max: 6
+    default: 1
+  spark_driver_memory:
+    min: 1024
+    max: 2048
+    default: 1024
+  spark_reducer_maxSizeInFlight:
+    min: 48
+    max: 128
+    default: 48
+  spark_shuffle_compress:
+    max:
+    range:
+        - "true"
+        - "false"
+    default: "true"
+  spark_shuffle_file_buffer:
+    min: 24
+    max: 128
+    default: 32
+  spark_shuffle_spill_compress:
+    max:
+    range:
+        - "false"
+        - "true"
+    default: "true"
+  spark_broadcast_compress:
+    max:
+    range:
+        - "false"
+        - "true"
+    default: "true"
+  spark_io_compression_codec:
+    max:
+    range:
+        - "lz4"
+        - "lzf"
+        - "snappy"
+    default: "lz4"
+  spark_io_compression_blockSize:
+    min: 2
+    max: 128
+    default: 32
+  spark_rdd_compress:
+    max:
+    range:
+        - "true"
+        - "false"
+    default: "false"
+  spark_serializer:
+    max:
+    range:
+        - "org.apache.spark.serializer.KryoSerializer"
+        - "org.apache.spark.serializer.JavaSerializer"
+    default: "org.apache.spark.serializer.JavaSerializer"
+  spark_memory_fraction:
+    min: 0.5
+    max: 0.8
+    float: yes
+    default: 0.6
+  spark_memory_storageFraction:
+    min: 0.4
+    max: 0.8
+    float: yes
+    default: 0.5
+  spark_broadcast_blockSize:
+    min: 2
+    max: 128
+    default: 4
+  yarn_executor_num:
+    min: 2
+    max: 8 #8
+    default: 2
+  yarn_executor_core:
+    min: 2  
+    max: 8 
+    default: 2 
+  spark_executor_memory:
+    min: 1024
+    max: 8192  
+    default: 2048
+  spark_yarn_am_memory:
+    min: 512
+    max: 1024
+    default: 512
+  spark_yarn_am_cores:
+    min: 2
+    max: 4
+    default: 2
+  yarn_scheduler_maximum_allocation_mb:
+    min: 8192
+    max: 12288
+    default: 8192
+  yarn_scheduler_minimum_allocation_mb:
+    min: 1024
+    max: 2048
+    default: 1024
+  yarn_nodemanager_resource_memory_mb:
+    min: 8196
+    max: 16384
+    default: 12288
+  yarn_nodemanager_vmem_pmem_ratio:
+    min: 3
+    max: 5
+    float: yes
+    default: 2.1
+  yarn_nodemanager_resource_cpu_vcores:
+    min: 8
+    max: 16
+    default: 12
+  yarn_scheduler_minimum_allocation_vcores:
+    min: 2
+    max: 4
+    default: 2
+  yarn_scheduler_maximum_allocation_vcores:
+    min: 8
+    max: 16
+    default: 8
+  dfs_replication:
+    min: 1
+    max: 3
+    default: 1
+  dfs_namenode_handler_count:
+    min: 10
+    max: 40
+    default: 10
+  dfs_datanode_handler_count:
+    min: 3
+    max: 12
+    default: 10
+
+  dfs_datanode_max_transfer_threads:
+    min: 4096
+    max: 8192
+    default: 4096
+  dfs_blocksize:
+    max:
+    range:
+        - 64
+        - 128
+        - 256
+    default: 128

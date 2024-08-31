@@ -1,4 +1,5 @@
 # Offline collected datasets of Hibench workloads
+This dataset characterizes the performance differences of Spark programs under different configurations.
 ## Experimental platform
 - local 3-node Spark cluster.
 - each vm 8-cores Intel(R) Core(TM) i7-10700 2.9GHz, 16 GB DDR4 memory and 1TB HDD.1Gb/s Ethernet network

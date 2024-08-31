@@ -1,7 +1,7 @@
 ## Main codes
 in this file, there are main codes of DeepCAT/DeepCAT+ and baseline approaches.
 - DeepCAT.py: training and online tuning of DeepCAT
-- DeepCAT_with_PNN.py: online tuning of DeepCAT+ to use PNN
+- DeepCAT_with_PNN.py: online tuning of DeepCAT+ to use PNN for unknown workloads
   1. choose most similar historical workload based on running logs
   2. load the base model and initial a new policy model
   3. update the policy model by PNN and conduct online tuning

@@ -9,6 +9,9 @@ from sklearn.preprocessing import StandardScaler
 from torch.nn import BatchNorm1d
 import datetime
 from SparkENV import SparkENV
+import os
+from similar import similar
+from scipy.spatial.distance import cdist
 
 MAX_EPISODES = 50
 MAX_EP_STEPS = 10
@@ -18,9 +21,39 @@ GAMMA = 0.95  # reward discount
 TAU = 0.005  # soft replacement
 MEMORY_CAPACITY = 1480
 BATCH_SIZE = 32
-# directory="../PNN/ts/"
-directory="../model_wc_increase/"
+current_directory = os.getcwd()
 
+def get_similar_workload():
+    Alog_feature=[]
+    target_worklaod_feature=[]
+    exist_workload_feature=[]
+
+    file=['wc','ts','pr','km']
+    with open(current_directory+'logs/'+'agg.txt') as f:
+        seq = f.read()
+        for i in range(0,16):
+            character_i = str(seq.split('\n')[i])
+            Alog_feature.append(float(character_i.split(':')[1]))
+    target_worklaod_feature.append(Alog_feature)
+
+    for filename in file:
+        with open(current_directory+'logs/'+filename+'.txt') as f:
+            base_feature = []
+            seq = f.read()
+            for i in range(0, 16):
+                character_i = str(seq.split('\n')[i])
+                base_feature.append(float(character_i.split(':')[1]))
+            exist_workload_feature.append(base_feature)
+
+    # print('target_worklaod_feature',target_worklaod_feature)
+    # print('exist_workload_feature',exist_workload_feature)
+
+    standardE =cdist(exist_workload_feature, target_worklaod_feature, metric='seuclidean')    #seuclidean
+    arr=np.array(standardE)
+    min_index =np.argmin(arr)
+    wk=file[min_index]
+    base_dir=(str(wk).split('.')[0])
+    return base_dir
 
 class ANet(nn.Module):  # ae(s)=a
     def __init__(self, s_dim, a_dim):
@@ -113,8 +146,8 @@ class DeepCAT_PNN(object):
         self.a_dim, self.s_dim = a_dim, s_dim
         self.memory = np.zeros((10, s_dim * 2 + a_dim + 1), dtype=np.float32)
         self.pointer = 0
-        self.policy= PNN(s_dim, a_dim) 
-        self.critic1=CNet(s_dim, a_dim) 
+        self.policy= PNN(s_dim, a_dim)  #为新任务的网络
+        self.critic1=CNet(s_dim, a_dim)  #老的critic
         self.critic2=CNet(s_dim, a_dim)
         self.train = torch.optim.Adam(self.policy.parameters(), lr=0.001)
         self.loss_td = nn.MSELoss()
@@ -157,17 +190,17 @@ class DeepCAT_PNN(object):
         self.memory[index, :] = transition
         self.pointer += 1
 
-    def save_model(self, episode):
-        model_name = "Actor_cdbtune_PNN" + str(episode) + ".pt"
-        torch.save(self.policy, directory + model_name)
+    # def save_model(self, episode):
+    #     model_name = "Actor_cdbtune_PNN" + str(episode) + ".pt"
+    #     torch.save(self.policy, directory + model_name)
 
-    def load_model(self, episode):
-        model_name_a = "Actor_td3_" + str(episode) + ".pt"
-        model_name_c1 = "Critic1_td3_" + str(episode) + ".pt"
-        model_name_c2 = "Critic2_td3_" + str(episode) + ".pt"
-        self.policy.preNET = torch.load(directory + model_name_a)
-        self.critic1=torch.load(directory + model_name_c1)
-        self.critic2=torch.load(directory + model_name_c2)
+    def load_model(self, dir):
+        model_name_a = dir+"Actor_td3.pt"
+        model_name_c1 = dir+"Critic1_td3.pt"
+        model_name_c2 = dir+"Critic2_td3.pt"
+        self.policy.preNET = torch.load(model_name_a)
+        self.critic1=torch.load(model_name_c1)
+        self.critic2=torch.load(model_name_c2)
 
     def finetune(self):
         bt = self.memory[:self.pointer,:]
@@ -193,35 +226,27 @@ def normalization(x,typeid,scaler):
 
 def get_scaler():
     # all data mean and std
-    x=np.loadtxt('memory_wc/pool_newstate.txt', delimiter=' ')
+    x=np.loadtxt('memory_wc/pool.txt', delimiter=' ')
     x=x[:,:8]  # all s   wc 1310   pr 1225  km 1480   ts 1151
     standardscaler = StandardScaler()
     scaler=standardscaler.fit(x)    # scaler-> mean,var
-    print("scaler:pr all sample s:8v")
-    print('每列的均值', scaler.mean_)
-    print('每列的方差', scaler.scale_)
-    # x = scaler.transform(x)
     return scaler
 
-def PNN_online(iter):
+def PNN_online(dir):
     scaler = get_scaler()
     env = SparkENV()
     s_dim = 8
     a_dim = 32
     deepcat=DeepCAT_PNN(a_dim, s_dim, scaler)
-    # deepcat.memory=np.loadtxt('memory_ts/pool_newstate.txt', delimiter=' ')
-    deepcat.load_model(iter) 
+    deepcat.memory=np.loadtxt(current_directory+'memory_ts/pool.txt', delimiter=' ')
+    deepcat.load_model(dir)
     time=[]
     deepcat.policy.freeze_preNET() 
-    # for i in range(100):
-    #     deepcat.finetune()
-    print('==========fine tune over==========')
-    # deepcat.save_model(i)
     s = env.reset()
     for j in range(10):
         print('s=', s)
         a = deepcat.choose_action(s)
-        a = np.clip(np.random.normal(a, 0.1), 0.1, 0.9)  # add randomness to action selection for exploration
+        a = np.clip(np.random.normal(a, 0.1), 0, 1)  # add randomness to action selection for exploration
         print('a=', a)
         s_, r, done, dur = env.step(a, 1, j)
         time.append(dur)
@@ -230,5 +255,10 @@ def PNN_online(iter):
         print('reward=', r, '----- dur=', dur)
         s=s_
     print(time)
+
 if __name__=='__main__':
-    PNN_online(100)
+    #step1: choose most similar worklaod based on runing logs
+    basemodel_dir=get_similar_workload()
+    basemodel_dir=current_directory+basemodel_dir
+    #step2: runing with PNN network
+    PNN_online(basemodel_dir)

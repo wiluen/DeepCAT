@@ -6,7 +6,7 @@ Big data frameworks usually provide a large number of performance-related parame
 ### Progressive Neural Networks (PNN) based Online Continual Learner
 1. **Log-based workload features extraction** 
 2. **PNN-based knowledge transfer**
-![PNN](img https://github.com/wiluen/DeepCAT/blob/main/fig/pnn.jpg)
+![PNN](https://github.com/wiluen/DeepCAT/blob/main/fig/pnn.jpg =400x)
 ## Start
 ### Cluster deployment
 1. Install Hadoop distributed environment and file system.

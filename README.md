@@ -1,5 +1,5 @@
 # DeepCAT+: A Low-Cost and Transferrable Online Configuration Auto-Tuning Approach for Big Data Frameworks(ICPP22,TPDS revision)
-Big data frameworks usually provide a large number of performance-related parameters. Online auto-tuning these parameters based on deep reinforcement learning (DRL) to achieve a better performance has shown their advantages over search-based and machine learning-based approaches. Unfortunately, the time cost during the online tuning phase of conventional DRL-based methods is still heavy, especially for big data applications. To reduce the total online tuning cost and increase the adaptability: 1) DeepCAT+ utilizes the TD3 algorithm instead of DDPG to alleviate value overestimation; 2) DeepCAT+ modifies the conventional experience replay to fully utilize the rare but valuable transitions via a novel reward-driven prioritized experience replay mechanism; 3) DeepCAT+ designs a Twin-Q Optimizer to estimate the execution time of each action without the costly configuration evaluation and optimize the sub-optimal ones to achieve a low-cost exploration-exploitation tradeoff; 4) Furthermore, DeepCAT+ also implements an Online Continual Learner module based on Progressive Neural Networks to transfer knowledge from historical tuning experiences. 
+Big data frameworks usually provide a large number of performance-related parameters. Online auto-tuning these parameters based on deep reinforcement learning (DRL) to achieve a better performance has shown their advantages over search-based and machine learning-based approaches. Unfortunately, the time cost during the online tuning phase of conventional DRL-based methods is still heavy, especially for big data applications. To reduce the total online tuning cost and increase the adaptability: 1) DeepCAT+ utilizes the TD3 algorithm instead of DDPG to alleviate value overestimation; 2) DeepCAT+ modifies the conventional experience replay to fully utilize the rare but valuable transitions via a novel **reward-driven prioritized experience replay mechanism**; 3) DeepCAT+ designs a **Twin-Q Optimizer** to estimate the execution time of each action without the costly configuration evaluation and optimize the sub-optimal ones to achieve a low-cost exploration-exploitation tradeoff; 4) Furthermore, DeepCAT+ also implements an **Online Continual Learner module** based on Progressive Neural Networks to transfer knowledge from historical tuning experiences. 
 ![system overview](https://github.com/wiluen/DeepCAT/blob/main/fig/overview.jpg)
 ## Start
 ### Cluster deployment
@@ -12,9 +12,9 @@ Big data frameworks usually provide a large number of performance-related parame
 1. Data collection: collect offline exploration data, including cluster metric states, configuration values, rewards.
 2. Use the data to form `memory pool` for offline training (`offline_train()` function in `DeepCAT.py`) and save the model.
 3. Use the model to tune configuration for big data frameworks using `tune()` in `DeepCAT.py`. Note there are 2 polciy:
-   - if the worklaod is **known**, DeepCAT will direct conduct optimization.
-   - if the worklaod is **unknown**, DeepCAT will use Progressive Neural Networks for continual learning to enhence it's adaptability.
-4. Compare DeepCAT with CDBTune, OtterTune and Qtune baselines
+   - if the worklaod is **known**, DeepCAT+ will direct conduct optimization, details in `DeepCAT.py`.
+   - if the worklaod is **unknown**, DeepCAT+ will use Progressive Neural Networks for continual learning to enhence it's adaptability, details in `DeepCAT_with_PNN.py`.
+4. Compare DeepCAT with CDBTune, OtterTune and Qtune baselines.
    
 ### Environment Version
 - Hadoop 2.7.3

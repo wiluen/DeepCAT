@@ -8,7 +8,7 @@ in this file, there are main codes of DeepCAT/DeepCAT+ and baseline approaches.
 - DDPG.py and TD3.py: original reinforcement learning algorithms
 - SparkENV.py: the `environment` module of RL in BD configuration tuning
 - util.py: some important implementations in SparkENV.py
-  
+
 ### lib
 Call `Ansible` to configure files, start testing and obtain results.
 
@@ -36,6 +36,10 @@ Spark event logs metrics and the description：
 
 `workload_similar.py` provide an example to calculate the similarity between different workloads, and the DeepCAT+ select the existing model trained with the most similar historcial workload as the base model, and utilize PNN for optimization.
 
+### memory
+memory pools of RL training. consisting of (state,action,reward,next_state) each rows.
+
+### model
 
 ### flink-experimental
 For the codes and experiments on Flink version, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details.

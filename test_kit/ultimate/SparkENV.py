@@ -4,7 +4,7 @@ from util import a2file,test,getduration,getnextstate,init_state
 class SparkENV():
     def __init__(self):
         super(SparkENV,self).__init__()
-        self.n_states=8     # 6*2+2
+        self.n_states=8     
         self.n_actions=32
         self.recordmin=40
         self.recordmax=200
@@ -14,7 +14,7 @@ class SparkENV():
 
         # self.s=np.array([0,0,0])
 
-    def isbest(self,dur): # 可优化
+    def isbest(self,dur): 
         if dur<self.recordmin:
             # self.recordmin=dur
             print('最少时间改变为:',dur)
@@ -36,7 +36,6 @@ class SparkENV():
 
     def step(self,a,i,j):
         a2file(a,i,j)
-        #把配置写进 {rep}_app_config.yml文件  yaml.dump 105r
         test(i,j)
         # x=input()
         # dur=int(x)
@@ -59,7 +58,7 @@ class SparkENV():
 
         # dur0=getduration(i,0)
         # print('t0:',dur0)
-        # -----------------------cdb reward--------------------------
+        # -----------------------cdbtune reward--------------------------
         # y = (self.start0 - dur0) / self.start0
         # y = (1 + y) ** 2 - 1
         # if j==0:

@@ -1,4 +1,4 @@
-This folder contains files for interacting with the experimental cluster.
+This folder contains files for interacting with the experimental cluster using `Ansible` playbook.
 ## role of playbook
 - fill configuration files
 - replace target configuration files of HADOOP,SPARK,HIBENCH

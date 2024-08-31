@@ -91,10 +91,6 @@ def init_conf(i,j):# 可用来看基准duration
 
 
 def a2file(action,i,j):
-# 字典hash存储，for不保证顺序
-# but 貌似app_config文件中的顺序就是hash序  所以文件读出来并且for循环，出来的顺序和app——config中顺序一样
-# 但是结果存进yaml文件中为字典序，不影响，因为只要action[m]和res[k]对应好即可
-# 那也保证了网络更新参数后的action和conf的对应关系
     m=0
     sparkres = {}
     yarnres= {}
@@ -131,7 +127,6 @@ def a2file(action,i,j):
                 dfsres[k] = int(dfsres[k])
                 dfsres[k] = max(dfsres[k], conf['min'])
             else:
-                #为range形 2,3 ge
                 knob_value = conf['range']
                 # print(knob_value)
                 enum_size = len(knob_value)
@@ -139,18 +134,10 @@ def a2file(action,i,j):
                 enum_index = min(enum_size - 1, enum_index)
                 eval_value = knob_value[enum_index]
                 dfsres[k] = eval_value
-        # else: # all >1 int
-        #     cores[k] = conf['max'] * action[m]
-        #     cores[k] = int(cores[k])
-        #     cores[k] = max(cores[k], conf['min'])
         m+=1
-        # if type(res[k]) is bool:
-        #     res[k] = str(res[k]).lower()
-    # print(res)
     spark_config_path = result_dir / f'{i}_{j}_spark_config.yml'
     yarn_config_path = result_dir / f'{i}_{j}_yarn_config.yml'
     dfs_config_path = result_dir / f'{i}_{j}_dfs_config.yml'
-    # cores_config_path = result_dir / f'{i}_{j}_core_config.yml'
     spark_config_path.write_text(
         yaml.dump(sparkres, default_flow_style=False)
     )
@@ -160,14 +147,11 @@ def a2file(action,i,j):
     dfs_config_path.write_text(
         yaml.dump(dfsres, default_flow_style=False)
     )
-    # cores_config_path.write_text(
-    #     yaml.dump(cores, default_flow_style=False)
-    # )
-    #字典序进去
     print(sparkres)
     print(yarnres)
     print(dfsres)
-    _print(f'{i}-{j}: spark/yarn/dfs/core config generated.')
+    _print(f'{i}-{j}: configuration file generated...')
+   
 
 
 def test(task_id,rep):
@@ -214,13 +198,8 @@ async def single_test(task_id, rep, clients):# testee
             task_id=task_id,
             rep=rep,
         )
-        #   # if len(stderr_hadoop) != 0:
-        #   #     (result_dir / f'{task_id}_deploy_hadoop_err_{rep}').write_text(stderr_hadoop)
-        #   # (result_dir / f'{task_id}_deploy_hadoop_log_{rep}').write_text(stdout_hadoop)
-        # _print(f'{task_id} - {rep}: hadoop deploy done.')
-
-        # - launch test and fetch result
-        _print(f'{task_id} - {rep}: hibench testing...')
+        _print('deploying...')
+        _print('testing...')
         # todo---------------------------------------------
         m11,m12=await run_playbook(
             tester_playbook_path,
@@ -230,11 +209,9 @@ async def single_test(task_id, rep, clients):# testee
             workload_path=str(workload_path),
             n_client=clients
         )
-        # print(m11)
-        # print(m12)
-        _print(f'{task_id} - {rep}: hibench done.')
+        _print('over...')
 
-        # - cleanup os config
+       
 
     except RuntimeError as e:
         errlog_path = result_dir / f'{task_id}_error_{rep}.log'
@@ -258,19 +235,41 @@ def get_state(dir,i,j,loadtype,datasize):
     sysinfo_wyl2=np.loadtxt(dir / f'{i}_wyl2_state_{j}')
     sysinfo_wyl3=np.loadtxt(dir / f'{i}_wyl3_state_{j}')
     # cpu:0-1   io:10-100  mem:1000+m
-    # normalize
-    #
-    # sysinfo_wyl2[3]/=10000
-    # sysinfo_wyl2[4]/=10000
-    # sysinfo_wyl2[5]/=10000
-    # sysinfo_wyl3[3]/=10000
-    # sysinfo_wyl3[4]/=10000
-    # sysinfo_wyl3[5]/=10000
     x=np.hstack((sysinfo_wyl2,sysinfo_wyl3))
     x=np.array(x)
     load_feature=np.append(loadtype,datasize)
     s=np.append(x,load_feature)
     return s
+
+def Qtune_get_state(i,j):
+    # state=6+6
+    feature = []
+    state=[]
+    with open(result_dir / f'{i}_run_result_{j}', 'r') as f:
+        seq = f.read()
+        time = float(seq.split('\n')[0])
+        for i in range(1, 7):
+            state_i = float(seq.split('\n')[i])
+            feature.append(state_i)
+    with open(result_dir / f'{i}_wyl2_state_{j}', 'r') as f2:
+        seq2=f2.read()
+        seq2=seq2.split(':')
+        n1=len(seq2)
+        x1=seq2[n1-1].split(',')
+        state.append(x1[0])
+        state.append(x1[1])
+        state.append(x1[2])
+    with open(result_dir / f'{i}_wyl3_state_{j}', 'r') as f3:
+        seq3=f3.read()
+        seq3=seq3.split(':')
+        n2=len(seq3)
+        x2=seq3[n2-1].split(',')
+        state.append(x2[0])
+        state.append(x2[1])
+        state.append(x2[2])
+
+    return time,feature,state
+
 
 def getnextstate(i,j,loadtype,datasize):
     dir=result_dir
@@ -297,10 +296,6 @@ def MLdata():
 
 
 def a2feature():
-# 字典hash存储，for不保证顺序
-# but 貌似app_config文件中的顺序就是hash序  所以文件读出来并且for循环，出来的顺序和app——config中顺序一样
-# 但是结果存进yaml文件中为字典序，不影响，因为只要action[m]和res[k]对应好即可
-# 那也保证了网络更新参数后的action和conf的对应关系
     Y = np.loadtxt('memory_km/dataset.txt', delimiter=' ')
     # Y=Y[:3]
     content=[]
@@ -321,7 +316,7 @@ def a2feature():
                         sparkres[k] = format(sparkres[k], '.2f')  # str
                         sparkres[k] = max(float(sparkres[k]), conf['min'])  # error:float and str cannot compare    add some noise
                 else:
-                    #为range形 2,3 ge
+                   
                     knob_value = conf['range']
                     # print(knob_value)
                     enum_size = len(knob_value)
@@ -447,10 +442,6 @@ def change_r():
     Y = np.loadtxt('memory_ts/pool_newstate.txt', delimiter=' ')
     for i in range(1151):
         line=Y[i]
-        # if line[46]==-1:
-        #     line[46]=-1.5
-        # if line[40]==0:
-        #     line[40]=60
         line[40]=60-60*line[40]
         # if line[46]>0.16:
         c[m]=line
@@ -493,40 +484,9 @@ def cdbtune_r():
         line[i][40]=reward[i]
 
     np.savetxt('memory_km/pool_cdbtune_final.txt', line, fmt='%f', delimiter=' ')
-    print('cdbtune reward change conpelete...')
-
-def delete_inf():
-    # when change r to cdbtune cause bug
-    c=0
-    Y = np.loadtxt('memory_km/pool_cdbtune_final.txt', delimiter=' ')
-    for i in range(1480):
-        line=Y[i]
-        if line[40]<-10:
-            c+=1
-            print(i)
-    print(c)
 
 
-# if __name__=='__main__':
-    # getgood()
-    # test(37,0)
-    # deletefail()
-    # change_r()
-    # MLdata()
-    # delstate()
-    # cdbtune_r()
-    # delete_inf()
-    # a2feature()
 
-
-#         if k == 'yarn_nodemanager_vmem_pmem_ratio':
-#             print(conf)
-#             x = conf['max'] * 0.7
-#             # if k == 'yarn_nodemanager_vmem_pmem_ratio':
-#             #     yarnres[k] = max(yarnres[k], conf['min'])
-#             # else:
-#             x= max(x, conf['min'])
-#             print(x)
 
 
 

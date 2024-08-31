@@ -3,7 +3,7 @@ Big data frameworks usually provide a large number of performance-related parame
 ![system overview](https://github.com/wiluen/DeepCAT/blob/main/fig/overview.jpg)
 
 ## New features in DeepCAT+ beyond [ICPP22 Paper DeepCAT](https://dl.acm.org/doi/abs/10.1145/3545008.3545018)
-Progressive Neural Networks (PNN) based Online Continual Learner
+Progressive Neural Networks (PNN) based Online Continual Learner to enhance the adaptability for dynamic workloads and hardware environments changes.
 1. **Log-based workload features extraction** 
 2. **PNN-based knowledge transfer**
    

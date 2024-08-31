@@ -21,10 +21,8 @@ noise_clip = 0.5
 policy_delay = 2
 policy_noise = 0.2
 directory="../"
-# directory="../model_td3_er/wc/"
-# directory="../model_ts_no_der_done/"
-# directory="../model_ts_increase/"
-# c=520
+
+
 
 
 
@@ -204,7 +202,7 @@ class TD3(object):
             self.ctrain2.step()
 
             if i % policy_delay == 0:
-                q = self.Critic1_eval(bs, a)  # 如果 a是一个正确的行为的话，那么它的Q应该更贴近0
+                q = self.Critic1_eval(bs, a)
                 loss_a = -torch.mean(q)
                 self.atrain.zero_grad()
                 loss_a.backward()
@@ -317,7 +315,7 @@ def offline_train(x):
     td3.memory2 = np.loadtxt('memory/pool_bad.txt', delimiter=' ')
     td3.pointer = 1151       
     print('============load memory===============')
-    for i in range(4001): #50w
+    for i in range(4001):
         td3.learn()
     td3.save_model(4000)
       

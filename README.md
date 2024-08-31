@@ -12,7 +12,7 @@ Big data frameworks usually provide a large number of performance-related parame
 > pip install -r requirements.txt
 
 ### Benchmark
-we use 8 worklaods with different input data sizes form Hibench [The HiBench Benchmark Suite: Characterization of the MapReduce-Based Data Analysis (https://www.spec.org/sources/cloudiaas2018/sources/hibench/HiBench/WISS10_conf_full_011.pdf)
+we use 9 worklaods with different input data sizes form Hibench [The HiBench Benchmark Suite: Characterization of the MapReduce-Based Data Analysis](https://www.spec.org/sources/cloudiaas2018/sources/hibench/HiBench/WISS10_conf_full_011.pdf)
 - WordCount (WC)
 - TeraSort (TS)
 - PageRank (PR)
@@ -21,8 +21,16 @@ we use 8 worklaods with different input data sizes form Hibench [The HiBench Ben
 - Nweight (NW)
 - Principal Component Analysis (PCA)
 - Aggregation (AGG)
-  
+- WordCount(for streaming)
+
+### Baseline
+[Ottertune](https://dl.acm.org/doi/abs/10.1145/3035918.3064029)
+[CDBTune](https://dl.acm.org/doi/abs/10.1145/3299869.3300085)
+[Qtune](https://dl.acm.org/doi/abs/10.14778/3352063.3352129)
+
+### Datasets
+The data collected based on the local 3-node Spark cluster includes the execution time of 4 spark workloads under different configuration values in the `datasets`. It is then processed into `transitions` training for reinforcement learning methods
 ### main codes
 
-### configuraiton details
+### Spark configuraiton details
 ![Description of the performance-critical parameters From Spark, YARN and HDFS](https://github.com/wiluen/DeepCAT/blob/main/fig/sparkconf.jpg)

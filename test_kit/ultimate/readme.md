@@ -26,4 +26,9 @@ Spark event logs metrics and the description：
 - **totalRecords_Read_sum**, total records from data source
 - **shuffle_write_sum**, total bytes of data write during shuffle operations
 
-we use the ' workload_similar.py' function to calculate the similarity between loads, select the model trained with the most similar load as the base model, and call pnn for optimization
+`workload_similar.py` provide an example to calculate the similarity between different workloads, and the DeepCAT+ select the existing model trained with the most similar historcial workload as the base model, and utilize PNN for optimization.
+
+
+
+### flink-experimental
+For the codes and experiments on Flink version, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details.

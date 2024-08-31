@@ -20,9 +20,12 @@ num_iteration = 10
 noise_clip = 0.5
 policy_delay = 2
 policy_noise = 0.2
-# directory="../model_hypeparam_n1n2_done/64/"
-directory="../model_km_increase/orig_td3/"
-c=520
+directory="../"
+# directory="../model_td3_er/wc/"
+# directory="../model_ts_no_der_done/"
+# directory="../model_ts_increase/"
+# c=520
+
 
 
 
@@ -113,64 +116,65 @@ class TD3(object):
         self.Critic2_eval.eval()   # when BN or Dropout in testing ################
         # s = torch.unsqueeze(torch.FloatTensor(s), 0)
         act = self.Actor_eval(s)[0].detach()  # ae（s）
-
-        # starttime = datetime.datetime.now()
-        # c=0
-        # while(c<50000):
-        #     q1 = self.Critic1_eval(s, act).detach()
-        #     q2 = self.Critic2_eval(s, act).detach()
-        #     q = torch.min(q1, q2)
-        #     if q.item()>=0.1:
-        #         break
-        #     else:
-        #         act = np.clip(np.random.normal(act, 0.05), 0.1, 0.9)
-        #         act = torch.FloatTensor(act)
-        #         c += 1
-        # endtime = datetime.datetime.now()
-        # duringtime = endtime - starttime
-        # print('q=',q.item())
-        # print(f'change action {c} time,consume {duringtime}')
-        self.Actor_eval.train()   ###############
-        self.Critic1_eval.train()   ###############
-        self.Critic2_eval.train()   ###############
+        print('original action',act)
+        starttime = datetime.datetime.now()
+        # twin-Q optimizer
+        c=0
+        while(c<50000):
+            q1 = self.Critic1_eval(s, act).detach()
+            q2 = self.Critic2_eval(s, act).detach()
+            q = torch.min(q1, q2)
+            if q.item()>=0.1:
+                break
+            else:
+                act = np.clip(np.random.normal(act, 0.1), 0, 1)
+                act = torch.FloatTensor(act)
+                c += 1
+        endtime = datetime.datetime.now()
+        duringtime = endtime - starttime
+        print('q=',q.item())
+        print(f'change action {c} time,consume {duringtime}')
+        self.Actor_eval.train()   
+        self.Critic1_eval.train()  
+        self.Critic2_eval.train()  
         return act
 
     def learn(self):
         self.Actor_eval.train()    # #################
         for i in range(num_iteration):
-            # =================DER=======================
+            # =================RDPER=======================
             # memory 1
-            # indices1 = np.random.choice(self.pointer, size=50)
-            # bt1 = self.memory[indices1, :]
-            # bs1 = torch.FloatTensor(bt1[:, :self.s_dim])
-            # ba1 = torch.FloatTensor(bt1[:, self.s_dim: self.s_dim + self.a_dim])
-            # br1 = torch.FloatTensor(bt1[:, self.s_dim + self.a_dim:self.s_dim + self.a_dim + 1])
-            # bs_1 = torch.FloatTensor(bt1[:, -self.s_dim - 1:-1])
-            # bd1 = torch.FloatTensor(bt1[:, -1:])
-            # # memory 2
-            # indices2 = np.random.choice(self.pointer2, size=50)
-            # bt2 = self.memory2[indices2, :]
-            # bs2 = torch.FloatTensor(bt2[:, :self.s_dim])
-            # ba2 = torch.FloatTensor(bt2[:, self.s_dim: self.s_dim + self.a_dim])
-            # br2 = torch.FloatTensor(bt2[:, self.s_dim + self.a_dim:self.s_dim + self.a_dim + 1])
-            # bs_2 = torch.FloatTensor(bt2[:, -self.s_dim - 1:-1])
-            # bd2 = torch.FloatTensor(bt2[:, -1:])
-            #
-            # bs=torch.cat((bs1,bs2),0)
-            # ba=torch.cat((ba1,ba2),0)
-            # br=torch.cat((br1,br2),0)
-            # bs_=torch.cat((bs_1,bs_2),0)
-            # bd=torch.cat((bd1,bd2),0)
+            indices1 = np.random.choice(self.pointer, size=)
+            bt1 = self.memory[indices1, :]
+            bs1 = torch.FloatTensor(bt1[:, :self.s_dim])
+            ba1 = torch.FloatTensor(bt1[:, self.s_dim: self.s_dim + self.a_dim])
+            br1 = torch.FloatTensor(bt1[:, self.s_dim + self.a_dim:self.s_dim + self.a_dim + 1])
+            bs_1 = torch.FloatTensor(bt1[:, -self.s_dim - 1:-1])
+            bd1 = torch.FloatTensor(bt1[:, -1:])
+            # memory 2
+            indices2 = np.random.choice(self.pointer2, size=50)
+            bt2 = self.memory2[indices2, :]
+            bs2 = torch.FloatTensor(bt2[:, :self.s_dim])
+            ba2 = torch.FloatTensor(bt2[:, self.s_dim: self.s_dim + self.a_dim])
+            br2 = torch.FloatTensor(bt2[:, self.s_dim + self.a_dim:self.s_dim + self.a_dim + 1])
+            bs_2 = torch.FloatTensor(bt2[:, -self.s_dim - 1:-1])
+            bd2 = torch.FloatTensor(bt2[:, -1:])
+            
+            bs=torch.cat((bs1,bs2),0)
+            ba=torch.cat((ba1,ba2),0)
+            br=torch.cat((br1,br2),0)
+            bs_=torch.cat((bs_1,bs_2),0)
+            bd=torch.cat((bd1,bd2),0)
 
-            # =============normal=======================
+            # =============normal ER=======================
 
-            indices = np.random.choice(self.pointer, size=100)
-            bt = self.memory[indices, :]
-            bs = torch.FloatTensor(bt[:, :self.s_dim])
-            ba = torch.FloatTensor(bt[:, self.s_dim: self.s_dim + self.a_dim])
-            br = torch.FloatTensor(bt[:, self.s_dim + self.a_dim:self.s_dim + self.a_dim + 1])
-            bs_ = torch.FloatTensor(bt[:, -self.s_dim - 1:-1])
-            bd = torch.FloatTensor(bt[:, -1:])
+            # indices = np.random.choice(self.pointer, size=64)
+            # bt = self.memory[indices, :]
+            # bs = torch.FloatTensor(bt[:, :self.s_dim])
+            # ba = torch.FloatTensor(bt[:, self.s_dim: self.s_dim + self.a_dim])
+            # br = torch.FloatTensor(bt[:, self.s_dim + self.a_dim:self.s_dim + self.a_dim + 1])
+            # bs_ = torch.FloatTensor(bt[:, -self.s_dim - 1:-1])
+            # bd = torch.FloatTensor(bt[:, -1:])
 
             bs = normalization(bs, 0,self.scaler)
             bs_ = normalization(bs_, 0,self.scaler)
@@ -217,16 +221,7 @@ class TD3(object):
                     target_param.data.copy_(
                         target_param.data * (1 - TAU) + param.data * TAU
                     )
-                # for x in self.Actor_target.state_dict().keys():
-                #     eval('self.Actor_target.' + x + '.data.mul_((1-TAU))')
-                #     eval('self.Actor_target.' + x + '.data.add_(TAU*self.Actor_eval.' + x + '.data)')
-                # for x in self.Critic1_target.state_dict().keys():
-                #     eval('self.Critic1_target.' + x + '.data.mul_((1-TAU))')
-                #     eval('self.Critic1_target.' + x + '.data.add_(TAU*self.Critic1_eval.' + x + '.data)')
-                # for x in self.Critic2_target.state_dict().keys():
-                #     eval('self.Critic2_target.' + x + '.data.mul_((1-TAU))')
-                #     eval('self.Critic2_target.' + x + '.data.add_(TAU*self.Critic2_eval.' + x + '.data)')
-
+               
 
     def store_transition(self, s, a, r, s_,done):
         transition = np.hstack((s, a, [r], s_,done))
@@ -238,41 +233,27 @@ class TD3(object):
         self.memory[index, :] = transition
         self.pointer += 1
 
-
-
     def load_model(self, episode):
         model_name_c1 = "Critic1_td3_" + str(episode) + ".pt"
-        model_name_c1t = "Critic1_td3_target" + str(episode) + ".pt"
         model_name_c2 = "Critic2_td3_" + str(episode) + ".pt"
-        model_name_c2t = "Critic2_td3_target" + str(episode) + ".pt"
         model_name_a = "Actor_td3_" + str(episode) + ".pt"
-        model_name_at = "Actor_td3_target" + str(episode) + ".pt"
-        self.Critic1_target = torch.load(directory + model_name_c1t)
+        self.Critic1_target = torch.load(directory + model_name_c1)
         self.Critic1_eval = torch.load(directory + model_name_c1)
-        self.Critic2_target = torch.load(directory + model_name_c2t)
+        self.Critic2_target = torch.load(directory + model_name_c2)
         self.Critic2_eval = torch.load(directory + model_name_c2)
-        self.Actor_target = torch.load(directory + model_name_at)
-        self.Actor_eval= torch.load(directory + model_name_a)
-
+        self.Actor_target = torch.load(directory + model_name_a)
+        self.Actor_eval = torch.load(directory + model_name_a)
 
     def save_model(self, episode):
         model_name_c1 = "Critic1_td3_" + str(episode) + ".pt"
-        model_name_c1t = "Critic1_td3_target" + str(episode) + ".pt"
         model_name_c2 = "Critic2_td3_" + str(episode) + ".pt"
-        model_name_c2t = "Critic2_td3_target" + str(episode) + ".pt"
         model_name_a = "Actor_td3_" + str(episode) + ".pt"
-        model_name_at = "Actor_td3_target" + str(episode) + ".pt"
         torch.save(self.Critic1_eval, directory + model_name_c1)
-        torch.save(self.Critic1_target, directory + model_name_c1t)
         torch.save(self.Critic2_eval, directory + model_name_c2)
-        torch.save(self.Critic2_target, directory + model_name_c2t)
         torch.save(self.Actor_eval, directory + model_name_a)
-        torch.save(self.Actor_target, directory + model_name_at)
-###############################  training  ####################################
-
+       
 
 def normalization(x,typeid,scaler):
-    # x:FloatTensor to array normalize then back to FloatTensor
     if typeid==1:   # choose action (s)
         x=np.array([x])
         x=scaler.transform(x)
@@ -284,21 +265,14 @@ def normalization(x,typeid,scaler):
 
 
 def get_scaler():
-    # all data mean and std
-    x=np.loadtxt('memory_ts/pool_newstate.txt', delimiter=' ')
-    x=x[:1151,:8]  # all s
+    x=np.loadtxt('memory/pool_newstate.txt', delimiter=' ')
+    x=x[:,:8]  # all s
     standardscaler = StandardScaler()
     scaler=standardscaler.fit(x)    # scaler-> mean,var
-    print("scaler:wc all sample s:8v")
-    print('每列的均值', scaler.mean_)
-    # 查看数据每列的方差
-    print('每列的方差', scaler.scale_)
-    # 对数据进行归一化，x_test要和x_train使用同个参数（即用x_train训练出来的参数）
-    # x = scaler.transform(x)
     return scaler
 
 
-def collect_data(x):
+def tune(x):
     scaler=get_scaler()
     env = SparkENV()
     s_dim = 8
@@ -306,54 +280,29 @@ def collect_data(x):
     count = 0
     td3 = TD3(a_dim, s_dim,scaler)
     td3.load_model(x)
-    print(f'============load model {x}iters===============')
-    # td3.memory = np.loadtxt('pool_wordcount_32v_3.txt', delimiter=' ')
-    # td3.pointer = 600
-    print('============load memory===============')
+    print(f'============load model ===============')
+    td3.memory = np.loadtxt('memory/pool_good.txt', delimiter=' ')
+    td3.memory2 = np.loadtxt('memory/pool_bad.txt', delimiter=' ')
+    td3.pointer = 200
+    td3.pointer2 = 200
+    # print('============load memory===============')
     # y = []
-    # alltime = []
-    # var = 0.4 # control exploration
+    alltime = []
+    var = 0.1 # control exploration
     for i in range(1):
         s = env.reset()
-        # ep_reward = 0
         for j in range(10):
             print('s=',s)
-            start = datetime.datetime.now()
-            count+=1
+            s1=datetime.datetime.now()
             a = td3.choose_action(s)
-            end = datetime.datetime.now()
-            print('select action',end-start)
-            # print('a=',a)
-            # a=np.random.rand(32)
-            # a = np.clip(np.random.normal(a, var), 0.25, 0.8)  # add randomness to action selection for exploration
-            a = np.clip(a, 0.1, 0.9)  # add randomness to action selection for exploration
-            # set hdfs param
-
-            print('noise action=', a)
+            s2=datetime.datetime.now()
+            print('overhead:',s2-s1)
             s_, r, done, dur = env.step(a,i,j)
-            # r=1
-            # dur=2
-            print('reward=',r,'----- dur=',dur)
-            # alltime.append(dur)
-
-            # if done == True:
-            #     done=1
-            # else:
-            #     done=0
-            # td3.store_transition(s, a, r, s_, done)
+            td3.store_transition(s, a, r, s_, done)
+            alltime.append(dur)
             s = s_
-            print('--------------------------------------')
-            # if count%10==0:
-            #     np.savetxt(f'memory_pr/pool_test1.6m.txt',td3.memory,fmt='%f',delimiter=' ')
-            #     print('memory pool save..')
-
-                # file = open('1600-dafault', 'w')
-                # file.write(str(alltime))
-                # file.close()
-
-
-
-
+            print('-------------------------------------------')
+            print(alltime)
 
 
 def offline_train(x):
@@ -362,33 +311,17 @@ def offline_train(x):
     s_dim = 8
     a_dim = 32
     td3 = TD3(a_dim, s_dim,scaler)
-    # td3.load_model(x)
+    td3.load_model(x)
     print(f'============load model {x}iters===============')
-    td3.memory = np.loadtxt('memory_km/pool_newstate.txt', delimiter=' ')
-    # td3.memory2 = np.loadtxt('memory_km/pool_bad_016.txt', delimiter=' ')
-    td3.pointer = 1480
-    # td3.pointer2 = 882
+    td3.memory = np.loadtxt('memory/pool_good.txt', delimiter=' ')
+    td3.memory2 = np.loadtxt('memory/pool_bad.txt', delimiter=' ')
+    td3.pointer = 1151       
     print('============load memory===============')
-    for i in range(5001): #50w
+    for i in range(4001): #50w
         td3.learn()
-        if i>1 and i%5000==0:
-            # print(f'{i} iter')
-            # if i%20000==0:
-            td3.save_model(i)
-        # print(f'{i} iter save model')
-            # if i%20000==0:
-            #     td3.save_model(i)
-            # if i%20000==0:
-            #     td3.save_model(i)
-            #     print(f'{i} iter save model')
+    td3.save_model(4000)
+      
 
-
-
-
-# 0,54,71,45,0,67,47,43,49,0,67,43,49,46,48,44,0,44,0,60,0,60,37,57,63,60,0
 if __name__=='__main__':
-    # offline_train(1)
-    collect_data(5000)   # normal ER45.5456.74,78
-
-
-
+    tune(40000)
+   

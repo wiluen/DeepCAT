@@ -7,7 +7,7 @@ Progressive Neural Networks (PNN) based Online Continual Learner
 1. **Log-based workload features extraction** 
 2. **PNN-based knowledge transfer**
    
-<img src="https://github.com/wiluen/DeepCAT/blob/main/fig/pnn.jpg" alt="pnn" width="200"/>
+<img src="https://github.com/wiluen/DeepCAT/blob/main/fig/pnn.jpg" alt="pnn" width="600"/>
 
 
 ## Start

@@ -11,4 +11,5 @@ This folder contains files for interacting with the experimental cluster using `
 - hibench/conf/spark/spark.conf
 - hibench/conf/spark/hibench.conf
 
-## sparkconf.yml: contains 32 performance-critical configuraiton parameters
+## sparkconf.yml: 
+contains 32 performance-critical configuraiton parameters

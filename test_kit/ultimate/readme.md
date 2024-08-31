@@ -1,8 +1,16 @@
 ## Main codes
 in this file, there are main codes of DeepCAT/DeepCAT+ and baseline approaches.
-
+- DeepCAT.py: training and online tuning of DeepCAT
+- DeepCAT_with_PNN.py: online tuning of DeepCAT+ to use PNN
+  1. choose most similar historical workload based on running logs
+  2. load the base model and initial a new policy model
+  3. update the policy model by PNN and conduct online tuning
+- DDPG.py and TD3.py: original reinforcement learning algorithms
+- SparkENV.py: the `environment` module of RL in BD configuration tuning
+- util.py: some important implementations in SparkENV.py
+  
 ### lib
-Call Ansible to configure files, start testing and obtain results.
+Call `Ansible` to configure files, start testing and obtain results.
 
 ### logs
 In this file, we provide some examples of workload runtime log metrics from Spark event logs, including 18 dimensional metrics.
@@ -27,7 +35,6 @@ Spark event logs metrics and the description：
 - **shuffle_write_sum**, total bytes of data write during shuffle operations
 
 `workload_similar.py` provide an example to calculate the similarity between different workloads, and the DeepCAT+ select the existing model trained with the most similar historcial workload as the base model, and utilize PNN for optimization.
-
 
 
 ### flink-experimental

@@ -10,8 +10,8 @@ Big data frameworks usually provide a large number of performance-related parame
 
 ### Steps for reproducing DeepCAT+’s Results
 1. Data collection: collect offline exploration data, including cluster metric states, configuration values, rewards.
-2. Use the data to form `memory pool` for offline training (`offline_train()` function in `DeepCAT.py`) and save the model.
-3. Use the model to tune configuration for big data frameworks using `tune()` in `DeepCAT.py`. Note there are 2 polciy:
+2. Use the data to form `memory pool` for offline training and save the model, see `offline_train()` function in `DeepCAT.py`.
+3. Use the model to tune configuration for big data frameworks using `tune()` in `DeepCAT.py`. Note there are two polcies:
    - if the workload is **known**, DeepCAT+ will direct conduct optimization, details in `DeepCAT.py`.
    - if the workload is **unknown**, DeepCAT+ will use Progressive Neural Networks for continual learning to enhence it's adaptability, details in `DeepCAT_with_PNN.py`.
 4. Compare DeepCAT with CDBTune, OtterTune and Qtune baselines.

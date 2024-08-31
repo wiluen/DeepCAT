@@ -146,8 +146,8 @@ class DeepCAT_PNN(object):
         self.a_dim, self.s_dim = a_dim, s_dim
         self.memory = np.zeros((10, s_dim * 2 + a_dim + 1), dtype=np.float32)
         self.pointer = 0
-        self.policy= PNN(s_dim, a_dim)  #为新任务的网络
-        self.critic1=CNet(s_dim, a_dim)  #老的critic
+        self.policy= PNN(s_dim, a_dim)  
+        self.critic1=CNet(s_dim, a_dim) 
         self.critic2=CNet(s_dim, a_dim)
         self.train = torch.optim.Adam(self.policy.parameters(), lr=0.001)
         self.loss_td = nn.MSELoss()
@@ -159,28 +159,9 @@ class DeepCAT_PNN(object):
         self.policy.eval()  # when BN or Dropout in testing ################
         self.critic1.eval()  # when BN or Dropout in testing ################
         self.critic2.eval()  # when BN or Dropout in testing ################
-        # s = torch.unsqueeze(torch.FloatTensor(s), 0)
         act = self.policy(s)[0].detach()  # ae（s）
-        # #
-        # q1 = self.critic1(s, act).detach()
-        # q2 = self.critic2(s, act).detach()
-        # print(f'action from PNN got Q-values :{q1} and {q2}')
-        # c = 0
-        # while (c < 50000):
-        #     q1 = self.critic1(s, act).detach()
-        #     q2 = self.critic2(s, act).detach()
-        #     q = torch.min(q1, q2)
-        #     if q.item() >=0:
-        #         break
-        #     else:
-        #         act = np.clip(np.random.normal(act, 0.1), 0.1, 0.9)
-        #         act = torch.FloatTensor(act)
-        #         c += 1
-        # # endtime = datetime.datetime.now()
-        # # # # duringtime = endtime - starttime
-        # # print('q=', q.item())
-        self.policy.train()  ###############
-        self.critic1.train()  ###############
+        self.policy.train() 
+        self.critic1.train()  
         self.critic2.train()
         return act
 

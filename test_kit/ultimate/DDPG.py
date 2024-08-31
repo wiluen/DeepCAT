@@ -145,18 +145,17 @@ class DDPG(object):
         loss_a.backward()
         self.atrain.step()
 
-        a_ = self.Actor_target(bs_)  # 这个网络不及时更新参数, 用于预测 Critic 的 Q_target 中的 action
-        q_ = self.Critic_target(bs_, a_)  # 这个网络不及时更新参数, 用于给出 Actor 更新参数时的 Gradient ascent 强度
-        q_target = br + (1-bd)*GAMMA * q_  # q_target = 负的
+        a_ = self.Actor_target(bs_)
+        q_ = self.Critic_target(bs_, a_) 
+        q_target = br + (1-bd)*GAMMA * q_
         q_v = self.Critic_eval(bs, ba)
         td_error = self.loss_td(q_target, q_v)
-        # td_error=R + GAMMA * ct（bs_,at(bs_)）-ce(s,ba) 更新ce ,但这个ae(s)是记忆中的ba，让ce得出的Q靠近Q_target,让评价更准确
+        # td_error=R + GAMMA * ct（bs_,at(bs_)）
         # print('critic td_error=',td_error)
         self.ctrain.zero_grad()
         td_error.backward()
         self.ctrain.step()
 
-#[84,120,288,372,522,838,1368,2164,3388,5099]
 
     def store_transition(self, s, a, r, s_,done):
         transition = np.hstack((s, a, [r], s_,done))
@@ -200,11 +199,6 @@ def get_scaler():
     x=x[:,:8]  # all s   wc 1310   pr 1225  km 1480   ts 1151
     standardscaler = StandardScaler()
     scaler=standardscaler.fit(x)    # scaler-> mean,var
-    print("scaler:pr all sample s:8v")
-    print('每列的均值', scaler.mean_)
-    # 查看数据每列的方差
-    print('每列的方差', scaler.scale_)
-    # 对数据进行归一化，x_test要和x_train使用同个参数（即用x_train训练出来的参数）
     # x = scaler.transform(x)
     return scaler
 

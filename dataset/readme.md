@@ -1,2 +1,11 @@
-# Offline collected datasets in Hibench
-Our experimental platform is a local 3-node Spark cluster. All the servers are connected with a 1Gb/s Ethernet network and each server is equipped with one 8-cores Intel(R) Core(TM) i7-10700 2.9GHz, 16 GB DDR4 memory and 1TB HDD. The version of the frameworks is Apache Spark 2.2.2 and Hadoop 2.7.3, while the underlying execution environment is OpenJDK 1.8.0 and Ubuntu 18.04 with kernel version 5.4.0
+# Offline collected datasets of Hibench workloads
+## Experimental platform
+- local 3-node Spark cluster.
+- each vm 8-cores Intel(R) Core(TM) i7-10700 2.9GHz, 16 GB DDR4 memory and 1TB HDD.1Gb/s Ethernet network
+
+##
+version of the frameworks 
+- Apache Spark 2.2.2
+- Hadoop 2.7.3
+- Hibench 7.0
+- JDK 1.8.0_ 211

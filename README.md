@@ -2,7 +2,7 @@
 Big data frameworks usually provide a large number of performance-related parameters. Online auto-tuning these parameters based on deep reinforcement learning (DRL) to achieve a better performance has shown their advantages over search-based and machine learning-based approaches. Unfortunately, the time cost during the online tuning phase of conventional DRL-based methods is still heavy, especially for big data applications. To reduce the total online tuning cost and increase the adaptability: 1) DeepCAT+ utilizes the TD3 algorithm instead of DDPG to alleviate value overestimation; 2) DeepCAT+ modifies the conventional experience replay to fully utilize the rare but valuable transitions via a novel reward-driven prioritized experience replay mechanism; 3) DeepCAT+ designs a Twin-Q Optimizer to estimate the execution time of each action without the costly configuration evaluation and optimize the sub-optimal ones to achieve a low-cost exploration-exploitation tradeoff; 4) Furthermore, DeepCAT+ also implements an Online Continual Learner module based on Progressive Neural Networks to transfer knowledge from historical tuning experiences. 
 ![system overview](https://github.com/wiluen/DeepCAT/blob/main/fig/overview.jpg)
 ## Start
-### Dluster deployment
+### Cluster deployment
 1. Install Hadoop distributed environment and file system
 2. install the Spark computing framework
 3. Install and compile the hibench testing framework
@@ -48,4 +48,4 @@ The data collected based on the local 3-node Spark cluster includes the executio
 ### Configuraiton details
 1. Description of the performance-critical parameters From Spark, YARN and HDFS
 ![Description of the performance-critical parameters From Spark, YARN and HDFS](https://github.com/wiluen/DeepCAT/blob/main/fig/sparkconf.jpg)
-2. Experiments on Flink, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details
+2. For experiments on Flink, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details

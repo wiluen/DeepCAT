@@ -1,0 +1,141 @@
+---
+# step size is 3    #这是作业总的并行度，应该设置为所以普taskmanager的slot总和
+  flink_parallelsm_default:
+    min: 5   #10-40
+    max: 40
+    float: no
+    default: 5
+# parallelsm 打满 = The number of flink_tm_num_task_slots  这个取决于每个节点的计算资源
+  flink_tm_num_task_slots:
+    min: 2   #4-8
+    max: 8
+    float: no
+    default: 1
+# step size is 3
+  # parallelsm.default < The number of taskmanager * taskmanager.numberOfTaskSlots
+  flink_tm_mem_managed_fraction:
+    min: 1
+    max: 6
+    float: no
+    default: 4
+  # step size is 0.1
+  flink_tm_mem_network_fraction:
+    min: 1
+    max: 6
+    float: no
+    default: 1
+  # step size is 0.05
+  # 托管内存大小与网内存大小之和小于flink总进程内存大小
+  flink_tm_memory_min:
+    min: 128
+    max: 256
+    float: no
+    default: 128
+  flink_tm_memory_max:
+    min: 1024
+    max: 2048
+    float: no
+    default: 1024
+  flink_jm_heap:
+    min: 1024
+    max: 4096
+    float: no
+    default: 1024
+  flink_tm_heap:
+    min: 1024
+    max: 10240
+    float: no
+    default: 1024
+#   kafka_num_partitions:
+#     min: 1
+#     max: 8
+#     float: no
+#     default: 1
+# # The number of partition is kafka_num_partitions * kafka_size
+#   kafka_producer_batch_size:
+#     min: 4
+#     max: 12
+#     float: no
+#     default: 4
+#   kafka_producer_linger_ms:
+#     min: 0
+#     max: 10
+#     float: no
+#     default: 0
+# # step size = 2
+#   kafka_producer_buffer_memory:
+#     min: 1
+#     max: 8
+#     float: no
+#     default: 4
+#   kafka_consumer_fetch_message_max_bytes:
+#     min: 1
+#     max: 8
+#     float: no
+#     default: 1
+#   kafka_consumer_num_consumer_fetchers:
+#     min: 1
+#     max: 8
+#     float: no
+#     default: 1
+#  ############################
+#   kafka_server_num_network_threads:
+#     min: 1
+#     max: 8
+#     float: no
+#     default: 3
+#   kafka_server_num_io_threads:
+#     min: 4
+#     max: 12
+#     float: no
+#     default: 8
+#   kafka_server_socket_receive_buffer_bytes:
+#     min: 1
+#     max: 10
+#     float: no
+#     default: 5
+#   kafka_server_socket_send_buffer_bytes:
+#     min: 1
+#     max: 10
+#     float: no
+#     default: 5
+  flink_tm_runtime_max_fan:
+    min: 7
+    max: 12
+    float: no
+    default: 8
+  flink_tm_runtime_sort_spilling_threshold:
+    min: 5
+    max: 95
+    float: no
+    default: 80
+  flink_tm_network_netty_client_numThreads:
+    min: 1
+    max: 8
+    float: no
+    default: 1
+  flink_tm_network_netty_num_arenas:
+    min: 1
+    max: 8
+    float: no
+    default: 1
+  flink_tm_network_netty_server_numThreads:
+    min: 1
+    max: 8
+    float: no
+    default: 1
+  flink_tm_runtime_hashjoin_bloom_filters:
+    range:
+      - 'true'
+      - 'false'
+    default: 'false'
+  blob_fetch_num_concurrent:
+    min: 4
+    max: 10
+    float: no
+    default: 5
+  blob_fetch_retries:
+    min: 4
+    max: 10
+    float: no
+    default: 5

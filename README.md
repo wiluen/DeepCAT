@@ -64,10 +64,15 @@ we use 9 worklaods with different input data sizes form Hibench [The HiBench Ben
 Seven experimental clusters to extensively evaluate the effectiveness of DeepCAT/DeepCAT+ and its robustness to various hardware environments.
 |  Cluster   | Nodes |Cluster types|BD frameworks|Evaluation|
 |  :----:  | :----:  | :----:  | :----:  | :----:  |
-| Cluster_A(Physical machine  | 3 | homogeneous | Spark | Effectiveness |
-| Cluster_B(VM) | 3 | homogeneous | Spark | Adaptability |
-| Cluster_C(Physical machine)  | 6 | homogeneous | Flink | Other BD frameworks|
-| Cluster_D(Physical machine+VM)  | 5 | heterogeneous | Spark |Heterogeneous clusters|
-| Cluster_E(VM)  | 8 | homogeneous | Spark |Large-scale clusters|
-| Cluster_F(VM)  | 10 | homogeneous | Spark |Large-scale clusters|
-| Cluster_G(VM)  | 12 | homogeneous | Spark |Large-scale clusters|
+| Cluster_A  | 3 | Physical machines | Spark | Effectiveness |
+| Cluster_B | 3 | VMs1 | Spark | Adaptability |
+| Cluster_C  | 6 | Physical machines | Flink | Other BD frameworks|
+| Cluster_D  | 5 | Physical machines + VMs2 | Spark |Heterogeneous clusters|
+| Cluster_E | 8 | VMs3 | Spark |Large-scale clusters|
+| Cluster_F  | 10 | VMs3 | Spark |Large-scale clusters|
+| Cluster_G  | 12 | VMs3 | Spark |Large-scale clusters|
+
+- Physical machines: 8 cores,16GB memory
+- VMs1: 8cores,8GB memory
+- VMs2: 12cores,8GB memory
+- VMs3: 8cores,16GB memory

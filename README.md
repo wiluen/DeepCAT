@@ -61,7 +61,7 @@ we use 9 worklaods with different input data sizes form Hibench [The HiBench Ben
 2. For experiments on Flink, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details.
 
 ### Hardware environments
-|  表头   | 表头  |
+|  cluster   | nodes |Cluster types|BD frameworks|
 |  ----  | ----  |
-| 单元格  | 单元格 |
-| 单元格  | 单元格 |
+| 1  | 3 | homo |Spark|
+| 2  |3 |homo|Spark|

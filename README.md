@@ -64,10 +64,10 @@ we use 9 worklaods with different input data sizes form Hibench [The HiBench Ben
 Seven experimental clusters to extensively evaluate the effectiveness of DeepCAT/DeepCAT+ and its robustness to various hardware environments.
 |  Cluster   | Nodes |Cluster types|BD frameworks|Evaluation|
 |  :----:  | :----:  | :----:  | :----:  | :----:  |
-| Cluster_A  | 3 | homogeneous | Spark | Effectiveness |
-| Cluster_B  | 3 | homogeneous | Spark | Adaptability |
-| Cluster_C  | 6 | homogeneous | Flink | Other BD frameworks|
-| Cluster_D  | 5 | heterogeneous | Spark |Heterogeneous clusters|
-| Cluster_E  | 8 | homogeneous | Spark |Large-scale clusters|
-| Cluster_F  | 10 | homogeneous | Spark |Large-scale clusters|
-| Cluster_G  | 12 | homogeneous | Spark |Large-scale clusters|
+| Cluster_A(Physical machine  | 3 | homogeneous | Spark | Effectiveness |
+| Cluster_B(VM) | 3 | homogeneous | Spark | Adaptability |
+| Cluster_C(Physical machine)  | 6 | homogeneous | Flink | Other BD frameworks|
+| Cluster_D(Physical machine+VM)  | 5 | heterogeneous | Spark |Heterogeneous clusters|
+| Cluster_E(VM)  | 8 | homogeneous | Spark |Large-scale clusters|
+| Cluster_F(VM)  | 10 | homogeneous | Spark |Large-scale clusters|
+| Cluster_G(VM)  | 12 | homogeneous | Spark |Large-scale clusters|

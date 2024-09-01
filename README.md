@@ -65,14 +65,14 @@ Seven experimental clusters to extensively evaluate the effectiveness of DeepCAT
 |  Cluster   | Nodes |Cluster types|BD frameworks|Evaluation|
 |  :----:  | :----:  | :----:  | :----:  | :----:  |
 | Cluster_A  | 3 | Physical machines | Spark | Effectiveness |
-| Cluster_B | 3 | VMs1 | Spark | Adaptability |
+| Cluster_B | 3 | VMs_1 | Spark | Adaptability |
 | Cluster_C  | 6 | Physical machines | Flink | Other BD frameworks|
-| Cluster_D  | 5 | Physical machines + VMs2 | Spark |Heterogeneous clusters|
-| Cluster_E | 8 | VMs3 | Spark |Large-scale clusters|
-| Cluster_F  | 10 | VMs3 | Spark |Large-scale clusters|
-| Cluster_G  | 12 | VMs3 | Spark |Large-scale clusters|
+| Cluster_D  | 5 | Physical machines + VMs_2 | Spark |Heterogeneous clusters|
+| Cluster_E | 8 | VMs_3 | Spark |Large-scale clusters|
+| Cluster_F  | 10 | VMs_3 | Spark |Large-scale clusters|
+| Cluster_G  | 12 | VMs_3 | Spark |Large-scale clusters|
 
-- Physical machines: 8 cores,16GB memory
-- VMs1: 8cores,8GB memory
-- VMs2: 12cores,8GB memory
-- VMs3: 8cores,16GB memory
+- Physical machines: 8 cores, 16GB memory
+- VMs_1: 8 cores, 8GB memory
+- VMs_2: 12 cores, 8GB memory
+- VMs_3: 8 cores, 16GB memory

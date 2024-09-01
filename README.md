@@ -61,6 +61,7 @@ we use 9 worklaods with different input data sizes form Hibench [The HiBench Ben
 2. For experiments on Flink, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details.
 
 ### Hardware environments
+Seven experimental clusters to extensively evaluate the effectiveness of DeepCAT/DeepCAT+ and its robustness to various hardware environments.
 |  Cluster   | Nodes |Cluster types|BD frameworks|Evaluation|
 |  :----:  | :----:  | :----:  | :----:  | :----:  |
 | Cluster_A  | 3 | homogeneous | Spark | Effectiveness |

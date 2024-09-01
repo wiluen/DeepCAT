@@ -63,5 +63,10 @@ we use 9 worklaods with different input data sizes form Hibench [The HiBench Ben
 ### Hardware environments
 |  cluster   | nodes |Cluster types|BD frameworks|
 |  ----  | ----  |----  | ----  |
-| 1  | 3 | homo | Spark |
-| 2  | 3 | homo | Spark |
+| A  | 3 | homo | Spark |
+| B  | 3 | homo | Spark |
+| C  | 6 | homo | Flink |
+| D  | 5 | heter | Spark |
+| E  | 8 | homo | Spark |
+| F  | 10 | homo | Spark |
+| G  | 12 | homo | Spark |

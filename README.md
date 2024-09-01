@@ -61,12 +61,12 @@ we use 9 worklaods with different input data sizes form Hibench [The HiBench Ben
 2. For experiments on Flink, check [test_kit/ultimate/flink-experimental/readme.md](https://github.com/wiluen/DeepCAT/blob/main/test_kit/ultimate/flink-experimental/readme.md) for more details.
 
 ### Hardware environments
-|  cluster   | nodes |Cluster types|BD frameworks|
-|  ----  | ----  |----  | ----  |
-| A  | 3 | homo | Spark |
-| B  | 3 | homo | Spark |
-| C  | 6 | homo | Flink |
-| D  | 5 | heter | Spark |
-| E  | 8 | homo | Spark |
-| F  | 10 | homo | Spark |
-| G  | 12 | homo | Spark |
+|  Cluster   | Nodes |Cluster types|BD frameworks|Evaluation|
+|  :----:  | :----:  | :----:  | :----:  | :----:  |
+| Cluster_A  | 3 | homogeneous | Spark | Effectiveness |
+| Cluster_B  | 3 | homogeneous | Spark | Adaptability |
+| Cluster_C  | 6 | homogeneous | Flink | Other BD frameworks|
+| Cluster_D  | 5 | heterogeneous | Spark |Heterogeneous clusters|
+| Cluster_E  | 8 | homogeneous | Spark |Large-scale clusters|
+| Cluster_F  | 10 | homogeneous | Spark |Large-scale clusters|
+| Cluster_G  | 12 | homogeneous | Spark |Large-scale clusters|

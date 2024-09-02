@@ -10,7 +10,7 @@ You can convert it into a real configuration through formula ：**x_true=max((x*
 
 ## Experimental platform
 - local 3-node Spark cluster.
-- each vm 8-cores Intel(R) Core(TM) i7-10700 2.9GHz, 16 GB DDR4 memory and 1TB HDD.1Gb/s Ethernet network
+- each nodes is equiped with 8-cores Intel(R) Core(TM) i7-10700 2.9GHz, 16 GB DDR4 memory and 1TB HDD.1Gb/s Ethernet network
 
 ## Version of the frameworks 
 - Apache Spark 2.2.2
